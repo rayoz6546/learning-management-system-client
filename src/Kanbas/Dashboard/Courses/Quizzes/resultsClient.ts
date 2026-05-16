@@ -16,11 +16,6 @@ const RESULTS_API = `${REMOTE_SERVER}/api/results`;
     return response.data;
   }
 
-  export const fetchResultsByUser = async (courseId:string, userId:string)=> {
-    const response = await axios.get(`${RESULTS_API}/all/${courseId}/${userId}`);
-    return response.data;
-  }
-
   export const createResults = async (quizId: string, userId:any,result: any) => {
     const response = await axios.post(
       `${RESULTS_API}/${quizId}/${userId}`,
@@ -31,11 +26,5 @@ const RESULTS_API = `${REMOTE_SERVER}/api/results`;
 
   export const deleteAll = async (courseId: string, quizId: string) => {
     const response = await axios.delete(`${RESULTS_API}/${courseId}/${quizId}`);
-    return response.data;
-  }
-
-
-  export const fetchAllResults = async () => { 
-    const response = await axios.get(`${RESULTS_API}`);
     return response.data;
   }

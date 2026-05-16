@@ -42,10 +42,8 @@ export default function QuizResults() {
         const quizzes = await coursesClient.findQuizzesForCourse(cid as string);
  
         dispatch(setQuizzes(quizzes));
+
         };
-
-    const today = new Date()
-
 
     useEffect(() => {
 
@@ -53,21 +51,10 @@ export default function QuizResults() {
         fetchQuizzes()
     }, []);
 
-    if (!result ) {
-        return <div>Loading...</div>; 
-    }
-
-    if (!quiz ) {
-        return <div>Loading...</div>; 
-    }
-
-
-
-
     return (
         <div className="container-fluid" id="wd-take-quiz">
             
-          
+
                 <div className="row d-flex">
                 <div className="col-8 me-5 ">
                 <div className="row mb-2">
@@ -110,16 +97,10 @@ export default function QuizResults() {
                     </div>
 
                 <div className="row">
-                    <p>Score for this Quiz:  <strong style={{fontSize:"20px"}}>{result.score}</strong> out of {quiz.points} <br />
-                    Submitted {result.submitted_date} <br />
-                    This attempt took {result.timetaken}</p>
+                    <p>Score for this Quiz:  <strong style={{fontSize:"20px"}}>{result.score}</strong> out of {quiz.points}</p>
                 </div>
-
-
-
                 <div className="row">
-                    <p>{(quiz.show_correct_answers && quiz.show_correct_answers_when!=="Immediately" && quiz.show_correct_answers_when!==today.toISOString().slice(0, 10)) ? <>Correct answers are locked until {quiz.show_correct_answers_when}</> : null}</p>
-
+                    <p>This attempt took {result.timetaken}</p>
                 </div>
 
                 {/* <div className="row mb-2">
@@ -208,7 +189,7 @@ export default function QuizResults() {
                                                                     <p>{index+1}.</p>
                                                                 </div>
                                                                 <div className="col-auto">
-                                                                    <input id={`wd-answer-${index}`} type="radio" className="me-3"checked={result.answers[question._id]===answer} disabled/>
+                                                                    <input id={`wd-answer-${index}`} type="checkbox" className="me-3"checked={result.answers[question._id]===answer} disabled/>
                                                                 </div>
                                                                 <div className="col-auto">
                                                                 <label htmlFor={`wd-answer-${index}`} className="form-label">{`${answer}`}</label>
@@ -270,16 +251,10 @@ export default function QuizResults() {
 
                                     </li>
 
-                                    {(quiz.show_correct_answers && (quiz.show_correct_answers_when==="Immediately" || quiz.show_correct_answers_when===today.toISOString().slice(0, 10))) && <li className="list-group-item border border-0 ms-4 mb-3" style={{color:"grey", fontWeight:"bold"}}>correct answer(s):<> </>
-                                    {Array.isArray(question?.correct_answer) 
+                                    {quiz.show_correct_answers && <li className="list-group-item border border-0 ms-4 mb-3" style={{color:"grey", fontWeight:"bold"}}>correct answer(s):<> </>
+                                    {Array.isArray(question.correct_answer) 
                                         ? <>
-                                            {question.correct_answer.map((a:any, i:any)=> 
-                                                <span key={i}>
-                                                {a}
-                                                {i < question.correct_answer.length - 1 ? ", " : ""}
-                                                </span>
-                                            )}
-
+                                            {question.correct_answer[0]}, {question.correct_answer[1]}
                                             </>
                                         : question.correct_answer}
                                     </li>}

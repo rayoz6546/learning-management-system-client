@@ -5,7 +5,6 @@ import AccountNavigation from "./Navigation";
 import { Routes, Route, Navigate } from "react-router";
 import { useSelector } from "react-redux";
 import Users from "./Users";
-import PeopleDetails from "../Dashboard/Courses/People/Details";
 
 export default function Account() {
   const { currentUser } = useSelector((state: any) => state.accountReducer);
@@ -16,7 +15,6 @@ export default function Account() {
           <div className="d-none d-md-block">
           <AccountNavigation/>
           </div>
-        
 
           <div className="flex-fill">
             <Routes>

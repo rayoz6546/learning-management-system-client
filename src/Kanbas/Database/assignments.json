@@ -1,0 +1,23 @@
+[
+    { "_id": "A101", "title": "Propulsion Assignment", "course": "RS101", "points": "100", "due_date": "May 13, 2024, 11:59PM","available_from":"May 6, 2024, 12:00AM", "until":"", "description":"write answers here:"},
+    { "_id": "A102", "title": "Combustion Analysis", "course": "RS101", "points": "100", "due_date": "May 20, 2024, 11:59PM","available_from":"May 13, 2024, 12:00AM", "until":"May 20, 2024, 11:59PM", "description":"" },
+    { "_id": "A103", "title": "Nozzle Design Project", "course": "RS101", "points": "100", "due_date": "May 27, 2024, 11:59PM","available_from":"May 20, 2024, 12:00AM", "until":"May 30, 2024, 11:59PM", "description":"" },
+    { "_id": "A201", "title": "Aerodynamics Quiz", "course": "RS102", "points": "50", "due_date": "May 14, 2024, 11:59PM","available_from":"May 7, 2024, 12:00AM", "until":"May 17, 2024, 11:59PM", "description":"" },
+    { "_id": "A202", "title": "Flow Analysis", "course": "RS102", "points": "40", "due_date": "May 21, 2024, 11:59PM","available_from":"May 14, 2024, 12:00AM", "until":"May 23, 2024, 11:59PM","description":"" },
+    { "_id": "A203", "title": "Heating Analysis", "course": "RS102", "points": "10", "due_date": "May 28, 2024, 11:59PM","available_from":"May 21, 2024, 12:00AM", "until":"May 29, 2024, 11:59PM", "description":"" },
+    { "_id": "A301", "title": "Structural Design Task", "course": "RS103", "points": "100", "due_date": "May 10, 2024, 11:59PM","available_from":"May 1, 2024, 12:00AM", "until":"May 12, 2024, 11:59PM", "description":"" },
+    { "_id": "A302", "title": "Orbital Calculations", "course": "RS103", "points": "100", "due_date": "May 17, 2024, 11:59PM","available_from":"May 8, 2024, 12:00AM", "until":"May 20, 2024, 11:59PM", "description":"" },
+    { "_id": "A303", "title": "Systems Engineering Exam", "course": "RS103", "points": "100", "due_date": "May 25, 2024, 11:59PM","available_from":"May 10, 2024, 12:00AM", "until":"", "description":"" },
+    { "_id": "A401", "title": "Introduction to Organic Chemistry", "course": "RS104", "points": "100", "due_date": "May 13, 2024, 11:59PM","available_from":"May 6, 2024, 12:00AM", "until":"", "description":"" },
+    { "_id": "A402", "title": "Molecules and Atoms", "course": "RS104", "points": "100", "due_date": "May 13, 2024, 11:59PM","available_from":"May 6, 2024, 12:00AM", "until":"", "description":"" },
+    { "_id": "A403", "title": "Water", "course": "RS104", "points": "100", "due_date": "May 13, 2024, 11:59PM","available_from":"May 6, 2024, 12:00AM", "until":"May 14, 2024, 11:59PM", "description":"" },
+    { "_id": "A501", "title": "Inorganic Chemistry Basics", "course": "RS105", "points": "100", "due_date": "May 13, 2024, 11:59PM","available_from":"May 6, 2024, 12:00AM", "until":"" , "description":""},
+    { "_id": "A502", "title": "Molecular Analysis", "course": "RS105", "points": "100", "due_date": "May 13, 2024, 11:59PM","available_from":"May 6, 2024, 12:00AM", "until":"" , "description":""},
+    { "_id": "A503", "title": "Advanced Analysis", "course": "RS105", "points": "100", "due_date": "May 13, 2024, 11:59PM","available_from":"May 6, 2024, 12:00AM", "until":"May 15, 2024, 11:59PM" , "description":""},
+    { "_id": "A601", "title": "Physical Chemistry Foundations", "course": "RS106", "points": "100", "due_date": "May 13, 2024, 11:59PM","available_from":"May 6, 2024, 12:00AM", "until":"" , "description":""},
+    { "_id": "A602", "title": "Testing Phases", "course": "RS106", "points": "100", "due_date": "May 13, 2024, 11:59PM","available_from":"May 6, 2024, 12:00AM", "until":"", "description":"" },
+    { "_id": "A603", "title": "Molecules Properties", "course": "RS106", "points": "100", "due_date": "May 13, 2024, 11:59PM","available_from":"May 6, 2024, 12:00AM", "until":"" , "description":""},
+    { "_id": "A701", "title": "Ancient Languages Overview", "course": "RS107", "points": "100", "due_date": "May 13, 2024, 11:59PM","available_from":"May 6, 2024, 12:00AM", "until":"" , "description":""},
+    { "_id": "A702", "title": "Ancient Scripts Overview", "course": "RS107", "points": "100", "due_date": "May 13, 2024, 11:59PM","available_from":"May 6, 2024, 12:00AM", "until":"", "description":"" },
+    { "_id": "A703", "title": "Elvish", "course": "RS107", "points": "100", "due_date": "May 13, 2024, 11:59PM","available_from":"May 6, 2024, 12:00AM", "until":"May 15, 2024, 11:59PM", "description":"" }
+  ]

@@ -1,0 +1,16 @@
+const FilterFunction = () => {
+    let numberArray1: Array<number> = [1, 2, 4, 5, 6];
+    const numbersGreaterThan2: Array<number> = numberArray1.filter((a) => a > 2);
+    const evenNumbers: Array<number> = numberArray1.filter((a) => a % 2 === 0);
+    const oddNumbers: Array<number> = numberArray1.filter((a) => a % 2 !== 0);
+    return (
+        <div id="wd-filter-function">
+            <h4>Filter Function</h4>
+            numbersGreaterThan2 = {numbersGreaterThan2}  <br />
+            evenNumbers = {evenNumbers}    <br />
+            oddNumbers = {oddNumbers}      <hr />
+        </div>
+    );
+}
+
+export default FilterFunction;

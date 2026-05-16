@@ -52,19 +52,6 @@ export default function TakeQuiz() {
     const [isTimeUp, setIsTimeUp] = useState(false); 
     const [quizStartTime, setQuizStartTime] = useState<number | null>(null); 
 
-    const date_submit = () => {
-        const now = new Date();
-        const month = now.toLocaleString('en-US', { month: 'short' });
-        const day = now.getDate(); 
-    
-        const timeOptions: Intl.DateTimeFormatOptions = {
-            hour: '2-digit',
-            minute: '2-digit',
-        };
-        const formattedTime = now.toLocaleTimeString('en-US', timeOptions);
-        return `${month} ${day} at ${formattedTime}`;
-    }
-
     const submit = async () => {
 
         if (!result) {
@@ -78,7 +65,6 @@ export default function TakeQuiz() {
             answers: userAnswers,
             timetaken: calculateTimeTaken().toString(),
             attempt: 1,
-            submitted_date: date_submit(),
         }
 
 
@@ -95,12 +81,11 @@ export default function TakeQuiz() {
                 answers: userAnswers,
                 timetaken: calculateTimeTaken().toString(),
                 attempt: parseInt(result.attempt)+1,
-                submitted_date: date_submit(),
             }
             await resultsClient.updateResults(updatedResult);
             dispatch(addResults(updatedResult));
         }
-        navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/PreviewResults`)
+        navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/QuizResults`)
 
     }
 
@@ -154,7 +139,6 @@ export default function TakeQuiz() {
 
         return totalScore
     }
-
 
     //--------------------------------------------------timer functions---------------------------------------//
 
@@ -284,7 +268,7 @@ export default function TakeQuiz() {
                                         <hr className="ms-4" style={{width:"95%"}}/>
                                         <div className="row">
                                             <div className="col-auto ms-5" >
-                                                <input type="radio" 
+                                                <input type="checkbox" 
                                                 checked={userAnswers[question[currentQuestionIndex]._id] === answer}
                                                 onChange={() => handleAnswerSelection(question[currentQuestionIndex]._id, answer)}
                                                 className="me-3" id={`wd-answer-${index}`}/>
@@ -434,7 +418,7 @@ export default function TakeQuiz() {
                                         <hr className="ms-4" style={{width:"95%"}}/>
                                         <div className="row">
                                             <div className="col-auto ms-5" >
-                                                <input type="radio" 
+                                                <input type="checkbox" 
                                                 checked={userAnswers[question._id] === answer}
                                                 onChange={() => handleAnswerSelection(question._id, answer)}
                                                 className="me-3" id={`wd-answer-${index}`}/>
