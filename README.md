@@ -4,6 +4,14 @@ React frontend for a Canvas-inspired learning management platform supporting cou
 
 This repository contains the client-side application for a full-stack learning management system. The frontend is built with React, TypeScript, Redux Toolkit, React Router, Axios, Bootstrap, and Recharts. It connects to a separate Node.js/Express/MongoDB backend through REST API endpoints.
 
+## Live Demo
+
+You can open the deployed app here:
+
+[Open the Learning Management System](https://learning-management-system-rayan.netlify.app/)
+
+The app may take a few moments to load. If you are not sure how to navigate the platform, use the demo video below for a quick walkthrough.
+
 ## Demo Video
 
 If the live deployment is unavailable, you can watch a walkthrough of the project here:
@@ -12,14 +20,6 @@ If the live deployment is unavailable, you can watch a walkthrough of the projec
 
 [Watch on YouTube](https://youtu.be/ea7ssjl5ycw?si=FTBWUDT8eywhppyB)
 
-
-## Live Demo
-
-You can open the deployed app here:
-
-[Open the Learning Management System](https://learning-management-system-rayan.netlify.app/)
-
-The app may take a few moments to load. If you are not sure how to navigate the platform, use the demo video below for a quick walkthrough.
 
 ## Overview
 
