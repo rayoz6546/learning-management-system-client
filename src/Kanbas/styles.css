@@ -25,9 +25,7 @@ body * {  font-family: Arial, Helvetica, sans-serif;  }
   .list-group-item {
     --bs-list-group-border-color: gray;
   }
-  .wd-lesson {
-    border-left: 3px solid green !important;
-  }
+
 
   .wd-assignment-link {
     text-decoration: none;
@@ -77,5 +75,24 @@ body * {  font-family: Arial, Helvetica, sans-serif;  }
 
 
 table td {
-  padding: 0;             
+  padding: 0;     
+      
 }
+
+
+#required-field {
+  position: relative;
+}
+
+
+#required-field .required-star{ 
+  scale: 0.5;
+  position: absolute;
+  top: 40%;
+  right: -20px; /* Adjust based on your layout */
+  transform: translateY(-50%);
+}
+
+
+
+

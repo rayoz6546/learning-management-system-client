@@ -5,10 +5,22 @@ const COURSES_API = `${REMOTE_SERVER}/api/courses`;
 
 
 export const fetchAllCourses = async () => {
-  const { data } = await axios.get(COURSES_API);
-  return data;
+  const response= await axios.get(COURSES_API);
+  return response.data;
  };
  
+ export const findCoursesByDepartment = async (department: string) => {
+  const encodedDepartment = encodeURIComponent(department);
+  const response = await axios.get(`${COURSES_API}?department=${encodedDepartment}`);
+  return response.data;
+};
+
+export const findCoursesByPartialName = async (name: string) => {
+  const response = await axios.get(`${COURSES_API}?name=${name}`);
+  return response.data;
+};
+
+
  export const createCourse = async (course: any) => {
 
   const { data } = await axiosWithCredentials.post(`${COURSES_API}`, course);
@@ -71,5 +83,16 @@ export const createQuizForCourse = async (courseId: string, quiz: any) => {
 };
 
 
+export const findAnnouncementsForCourse = async (courseId: string) => {
+  const response = await axios.get(`${COURSES_API}/${courseId}/announcements`);
+  return response.data;
+};
 
+export const createAnnouncementForCourse = async (courseId: string, announcement: any) => {
+  const response = await axios.post(
+    `${COURSES_API}/${courseId}/announcements`,
+    announcement
+  );
+  return response.data;
+};
 

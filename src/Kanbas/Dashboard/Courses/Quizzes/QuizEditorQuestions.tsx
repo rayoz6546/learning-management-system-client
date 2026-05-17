@@ -1,23 +1,19 @@
 import { FaPlus } from "react-icons/fa6";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { addQuestion, deleteQuestion, updateQuestion, resetQuestions, setQuestions } from "./questionsReducer";
 import { useDispatch, useSelector } from "react-redux";
 import Editor from 'react-simple-wysiwyg';
 import { FaTrash } from "react-icons/fa";
 import { BsGripVertical } from "react-icons/bs";
 import { FaPencil } from "react-icons/fa6";
-import * as quizzesClient from "../Quizzes/client";
-import * as questionsClient from "../Quizzes/questionsClient";
-
-export default function QuizEditorQuestions({quiz, setQuizQuestions,questionsToDelete, questionsToAdd, questionsToUpdate, setNewQuizQuestions,handleSaveQuestions,setQuestionsToDelete, setQuestionsToAdd, setQuestionsToUpdate, handleCancelQuestions,stagedQuestions, setStagedQuestions}:
-    {quiz:any, setQuizQuestions:any, setNewQuizQuestions:any,questionsToDelete:any, questionsToAdd:any, questionsToUpdate:any, setQuestionsToDelete:any, setQuestionsToAdd:any, setQuestionsToUpdate:any, handleSaveQuestions:()=>void,handleCancelQuestions:()=>void
+import { setQuizzes } from "./quizzesReducer";
+import * as coursesClient from "../client";
+export default function QuizEditorQuestions({ setQuizQuestions,questionsToDelete, questionsToAdd, questionsToUpdate, setNewQuizQuestions,handleSaveQuestions,setQuestionsToDelete, setQuestionsToAdd, setQuestionsToUpdate, handleCancelQuestions,stagedQuestions, setStagedQuestions}:
+    { setQuizQuestions:any, setNewQuizQuestions:any,questionsToDelete:any, questionsToAdd:any, questionsToUpdate:any, setQuestionsToDelete:any, setQuestionsToAdd:any, setQuestionsToUpdate:any, handleSaveQuestions:()=>void,handleCancelQuestions:()=>void
         stagedQuestions:any, setStagedQuestions:any
     }) {
     const { cid, qid } = useParams()
-    const dispatch = useDispatch()
 
-    const { questions } = useSelector((state: any) => state.questionsReducer); 
 
 
     
@@ -25,7 +21,7 @@ export default function QuizEditorQuestions({quiz, setQuizQuestions,questionsToD
     const [showQuestionInput, setShowQuestionInput] = useState(false);
 
     const [newQuestionTitle, setNewQuestionTitle] = useState("");
-    const [newQuestionType, setNewQuestionType] = useState("Select Question Type");
+    const [newQuestionType, setNewQuestionType] = useState("Multiple Choice");
     const [newQuestionPoints, setNewQuestionPoints] = useState("");
     const [newQuestionDescription, setNewQuestionDescription] = useState("");
     const [newQuestionAnswers, setNewQuestionAnswers] = useState<string[]>([""]);
@@ -36,11 +32,6 @@ export default function QuizEditorQuestions({quiz, setQuizQuestions,questionsToD
 
     const [correctAnswerIsList, setcorrectAnswerIsList] = useState(false);
 
-    // useEffect(() => {
-    //     if (quiz) {
-    //         setStagedQuestions([...quiz.questions]);
-    //     }
-    // }, [quiz]);
 
 //----------------------reducer functions for answers (adding/editing/deleting possible answers for each question)--------------//
     const handleAnswerChange = (index: number, value: string) => {
@@ -66,10 +57,6 @@ export default function QuizEditorQuestions({quiz, setQuizQuestions,questionsToD
         setNewQuestionCorrectAnswer(newQuestionAnswers[index]);
     };
 
-    // const handleCorrectAnswerChangeList = ()=> {
-    //     setNewQuestionCorrectAnswerList([...newQuestionAnswers, ""])
-
-    // }
 
     const handleCorrectAnswerChangeList = (index: number, value: string) => {
         setNewQuestionCorrectAnswerList((prevList) => {
@@ -118,7 +105,7 @@ export default function QuizEditorQuestions({quiz, setQuizQuestions,questionsToD
             }
         });
 
-
+        setCurrentEditingQuestionId(null)
         resetQuestion();
         setShowQuestionInput(false);
 
@@ -133,12 +120,13 @@ export default function QuizEditorQuestions({quiz, setQuizQuestions,questionsToD
     const resetQuestion = () => {
 
         setNewQuestionTitle("");
-        setNewQuestionType("Select Question Type")
+        setNewQuestionType("Multiple Choice")
         setNewQuestionPoints("");
         setNewQuestionDescription("");
         setNewQuestionAnswers([""]);
         setNewQuestionCorrectAnswer("");
         setNewQuestionCorrectAnswerList([""]);
+
     }
 
     const handleEditQuestion = (question: any) => {
@@ -158,6 +146,30 @@ export default function QuizEditorQuestions({quiz, setQuizQuestions,questionsToD
 
         setStagedQuestions((prev:any) => prev.filter((q:any) => q._id !== questionId));
     };
+    const {quizzes} = useSelector((state: any) => state.quizzesReducer);
+    const quiz = quizzes.find((q:any) => q._id === qid && q.course === cid);
+    const dispatch = useDispatch();
+
+    const fetchQuizzes = async () => {
+        const quizzes = await coursesClient.findQuizzesForCourse(cid as string);
+        dispatch(setQuizzes(quizzes));
+
+        };
+          useEffect(() => {
+            if (!quiz) {
+                fetchQuizzes();
+            } else {
+                setStagedQuestions(stagedQuestions);
+
+            }
+        }, [
+            dispatch,
+            quiz,
+            qid,
+            setStagedQuestions,
+            stagedQuestions
+   
+        ]);
 
     
     return (
@@ -221,10 +233,9 @@ export default function QuizEditorQuestions({quiz, setQuizQuestions,questionsToD
 
 
                             <div className="col-auto">
-                                <select id="wd-question-type" className="form-select" value={newQuestionType} 
+                                <select id="wd-question-type" className="form-select" value={newQuestionType} defaultValue={"Multiple Choice"}
                
                                 onChange={(e) => {setNewQuestionAnswers([""]); setNewQuestionCorrectAnswer(""); setNewQuestionDescription(""); setNewQuestionType(e.target.value.toString())}}>
-                                    <option value="Select Question Type">Select Question Type</option>
                                     <option value="Multiple Choice">Multiple Choice</option>
                                     <option value="True or False">True or False</option>
                                     <option value="Fill in the Blank">Fill in the Blank</option>
@@ -239,7 +250,6 @@ export default function QuizEditorQuestions({quiz, setQuizQuestions,questionsToD
                         </div>
 
                         <hr />
-
 
                         {/* ---------------------------------------MULTIPLE CHOICE----------------------------------------- */}
 
@@ -260,13 +270,15 @@ export default function QuizEditorQuestions({quiz, setQuizQuestions,questionsToD
                                 <div className="row">
                                     <h5 style={{ fontWeight: "bold" }}>Answers:</h5>
                                 </div>
+             
                                 {newQuestionAnswers.map((answer, index) => (
                                     <div className="row mb-1" key={index}>
                                         <ul className="list-group rounded-0 border">
                                             <li className="list-group-item border-0">
                                                 <div className="row">
                                                     <div className="col-auto" >
-                                                        <input type="checkbox" className="me-3" id={`wd-answer-${index}`}
+                                                        <input type="radio" name="radiob" className="me-3" id={`wd-answer-${index}`}
+                                                            checked={(answer!=="") && newQuestionCorrectAnswer===answer}
                                                             onChange={() => handleCorrectAnswerChange(index)}
                                                         />
                                                     </div>
@@ -369,7 +381,32 @@ export default function QuizEditorQuestions({quiz, setQuizQuestions,questionsToD
                         </div>
 
                         <div className="row mb-4">
-                            <Editor value={newQuestionDescription||"______"} onChange={(e) => setNewQuestionDescription(e.target.value)} />
+                            <Editor value={newQuestionDescription||"______"} 
+
+                            onChange={(e) => {
+                                const updatedDescription = e.target.value;
+                                if (!updatedDescription.trim() || !updatedDescription.includes("______")) {
+                                    setNewQuestionDescription("______");
+                                } else {
+                                    setNewQuestionDescription(updatedDescription);
+                                }
+                            }}
+                            onKeyDown={(e) => {
+                                const target = e.target as HTMLTextAreaElement;
+                                if (!target || typeof target.selectionStart !== "number" || typeof target.selectionEnd !== "number") {
+                                    return;
+                                }
+                                const { selectionStart, selectionEnd } = target;
+                                const text = target.value;
+                        
+                                if (
+                                    (e.key === "Backspace" && text.slice(Math.max(0, selectionStart - 1), selectionEnd).includes("______")) ||
+                                    (e.key === "Delete" && text.slice(selectionStart, selectionEnd + 1).includes("______"))
+                                ) {
+                                    e.preventDefault();
+                                }
+                            }}
+                            />
 
                         </div>
                                 <div className="row mb-3">
@@ -418,9 +455,9 @@ export default function QuizEditorQuestions({quiz, setQuizQuestions,questionsToD
                         <div className="row mt-2 mb-4">
                             <div className="col">
 
-                                <button className="btn btn-secondary rounded-1 me-2" type="submit" onClick={() => { resetQuestion() ;setShowQuestionInput(false); }}>Cancel</button>
+                                <button className="btn btn-secondary rounded-1 me-2" type="submit" onClick={() => { resetQuestion() ;setShowQuestionInput(false); setCurrentEditingQuestionId(null)}}>Cancel</button>
 
-                                <button className="btn btn-danger rounded-1" type="submit"
+                                <button className="btn btn-primary rounded-1" type="submit"
                                     onClick={
                                         handleAddOrUpdateQuestion
 
@@ -441,7 +478,7 @@ export default function QuizEditorQuestions({quiz, setQuizQuestions,questionsToD
                             <button className="btn btn-secondary rounded-1 me-2" type="submit" onClick={()=>{resetQuestion();handleCancelQuestions()}} >Cancel</button>
                         </Link>
                         <Link to={`/Kanbas/Courses/${cid}/Quizzes/${qid}/Editor/Details`}>
-                            <button className="btn btn-danger rounded-1" type="submit"
+                            <button className="btn btn-primary rounded-1" type="submit"
                             onClick={()=>{resetQuestion();handleSaveQuestions()}}>Save</button>
                         </Link>
                     </div>

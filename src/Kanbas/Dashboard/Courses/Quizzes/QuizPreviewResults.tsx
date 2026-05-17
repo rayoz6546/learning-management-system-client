@@ -60,7 +60,7 @@ export default function QuizResults() {
 
     return (
         <div className="container-fluid" id="wd-take-quiz">
-            
+        
 
                 <div className="row d-flex">
                 <div className="col-8 me-5 ">
@@ -102,12 +102,15 @@ export default function QuizResults() {
                     </table>
                     </div>
 
+
                 <div className="row">
-                    <p>Score for this Quiz:  <strong style={{fontSize:"20px"}}>{result.score}</strong> out of {quiz.points}</p>
+                    <p>Score for this Quiz:  <strong style={{fontSize:"20px"}}>{result.score}</strong> out of {quiz.points} <br />
+                    Submitted {result.submitted_date} <br />
+                    This attempt took {result.timetaken}</p>
                 </div>
-                <div className="row">
-                    <p>This attempt took {result.timetaken}</p>
-                </div>
+           
+
+
 
                 {/* <div className="row mb-2">
                 <h4><strong>Quiz Instructions</strong></h4>
@@ -195,7 +198,7 @@ export default function QuizResults() {
                                                                     <p>{index+1}.</p>
                                                                 </div>
                                                                 <div className="col-auto">
-                                                                    <input id={`wd-answer-${index}`} type="checkbox" className="me-3"checked={result.answers[question._id]===answer} disabled/>
+                                                                    <input id={`wd-answer-${index}`} type="radio" className="me-3"checked={result.answers[question._id]===answer} disabled/>
                                                                 </div>
                                                                 <div className="col-auto">
                                                                 <label htmlFor={`wd-answer-${index}`} className="form-label">{`${answer}`}</label>
@@ -259,6 +262,19 @@ export default function QuizResults() {
                                     </li>
 
                      
+                                    {quiz.show_correct_answers && <li className="list-group-item border border-0 ms-4 mb-3" style={{color:"grey", fontWeight:"bold"}}>correct answer(s):<> </>
+                                    {Array.isArray(question?.correct_answer) 
+                                        ? <>
+                                            {question.correct_answer.map((a:any, i:any)=> 
+                                                <span key={i}>
+                                                {a}
+                                                {i < question.correct_answer.length - 1 ? ", " : ""}
+                                                </span>
+                                            )}
+
+                                            </>
+                                        : question.correct_answer}
+                                    </li>}
   
 
 

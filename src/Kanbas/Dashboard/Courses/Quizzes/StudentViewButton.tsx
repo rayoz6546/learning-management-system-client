@@ -4,9 +4,21 @@ import { LuGlasses } from "react-icons/lu";
 export default function StudentViewButton({ isStudentView, onClick }: { isStudentView: boolean; onClick: () => void }) {
     const { pathname } = useLocation();
     const isQuizzes = pathname.includes("Quizzes")
+    const isModules = pathname.includes("Modules") || pathname.includes("Home")
+    const isAssignments = pathname.includes("Assignments") || pathname.includes("Assignment")
+
     return (
         <>
             {isQuizzes ?
+                (<div className="col d-none d-md-block"><button id="wd-student-view-button" className="btn btn-lg btn-secondary fs-6 rounded-1 me-2" style={{ position: "absolute", right: "10px", top: "12px" }} onClick={onClick}>
+                    <LuGlasses className="me-2 fs-5" />{isStudentView ? "Student View" : "Faculty View"}</button></div>) : null}
+
+                
+                    {isModules ?
+                (<div className="col d-none d-md-block"><button id="wd-student-view-button" className="btn btn-lg btn-secondary fs-6 rounded-1 me-2" style={{ position: "absolute", right: "10px", top: "12px" }} onClick={onClick}>
+                    <LuGlasses className="me-2 fs-5" />{isStudentView ? "Student View" : "Faculty View"}</button></div>) : null}
+
+                    {isAssignments ?
                 (<div className="col d-none d-md-block"><button id="wd-student-view-button" className="btn btn-lg btn-secondary fs-6 rounded-1 me-2" style={{ position: "absolute", right: "10px", top: "12px" }} onClick={onClick}>
                     <LuGlasses className="me-2 fs-5" />{isStudentView ? "Student View" : "Faculty View"}</button></div>) : null}
         </>

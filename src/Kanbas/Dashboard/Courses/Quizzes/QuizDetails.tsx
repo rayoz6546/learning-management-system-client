@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import ProtectedContent from "../../../Account/ProtectedContent";
 import ProtectedContentEnrollment from "../../../Account/ProtectedContentEnrollment";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as resultsClient from "./resultsClient";
 import * as coursesClient from "../client";
 import { setResults } from "./resultsReducer";
@@ -18,6 +18,8 @@ import * as questionsClient from "./questionsClient";
 export default function QuizDetails() {
     const { cid, qid } = useParams()
     const { quizzes } = useSelector((state: any) => state.quizzesReducer);
+    const quiz = quizzes.find((q: any) => q.course === cid && q._id === qid)
+
     const dispatch = useDispatch()
 
     const { isStudentView, toggleView } = useViewContext();
@@ -28,47 +30,53 @@ export default function QuizDetails() {
     const {results} = useSelector((state:any)=> state.resultsReducer)
     const result = results.find((res:any)=>res.quizId === qid && res.courseId=== cid && res.userId === currentUser._id)
 
-    const { questions } = useSelector((state: any) => state.questionsReducer); 
+    const [code, setCode] = useState("")
+    const [enterCode, setEnderCode] = useState(false)
 
     const fetchResults = async () => {
         const results = await resultsClient.fetchResults(qid as string, currentUser._id)
         dispatch(setResults(results))
      }
  
- 
      const fetchQuizzes = async () => {
-         const quizzes = await coursesClient.findQuizzesForCourse(cid as string);
-  
-         dispatch(setQuizzes(quizzes));
- 
-         };
-         
-        const fetchQuestions = async () => {
-        const questions = await questionsClient.fetchQuestions(qid as string);
-        dispatch(setQuestions(questions));
-        };
+        const quizzes = await coursesClient.findQuizzesForCourse(cid as string);
+        dispatch(setQuizzes(quizzes));
+
+      };
+
 
      useEffect(() => {
- 
 
         fetchResults()
+
+
+         
+     }, [results, result]);
+
+
+
+     useEffect(() => {
+
+        fetchQuizzes()
+
+
          
      }, []);
 
 
+
     return (
         <>
-        
+
+
             <ProtectedContentEnrollment>
 
-
+            
             <>{quizzes
                     .filter((quiz: any) => quiz.course == cid)
                     .filter((quiz: any) => quiz._id == qid)
                     .map((quiz: any) => (
                         <>
-                       
-
                             <div className="row">
                                 <h4 style={{ fontWeight: "bold" }}> {`${quiz.title}`} </h4>
                             </div>
@@ -83,15 +91,30 @@ export default function QuizDetails() {
                                     </tbody>
                                 </table>
                             </div>
-             
+
                     {(quiz.availability==="Available" || quiz.availability==="") && (
                         <>
-                            {(result?.attempt==null )&& (
+                        
+                            {(result?.attempt==null )&& (quiz.access_code==="" ? 
                                 <div className="row-auto d-flex justify-content-center">
                                 <button id="wd-takequiz-btn" className="btn btn-lg btn-danger fs-6 rounded-1 me-1"
                                 onClick={() =>{navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/TakeQuiz`);}}>
                                     Take Quiz</button>
-                            </div>)}
+                            </div> :   <div className="row-auto d-flex justify-content-center">
+                                <button id="wd-takequiz-btn" className="btn btn-lg btn-danger fs-6 rounded-1 me-1"
+                                onClick={() =>{setEnderCode((prev:any)=>!prev)}}>
+                                    Take Quiz</button><br /><br />
+
+                                {enterCode && (
+
+                                    <div className="row-auto d-flex justify-content-center">
+                                        <input type="text" className="form-control me-1" placeholder="Enter Access Code" onChange={(e)=> setCode(e.target.value)}/>
+                                    <button id="wd-takequiz-btn" className="btn btn-lg btn-primary fs-6 rounded-1 me-1"
+                                    onClick={() =>{code === quiz.access_code && navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/TakeQuiz`)}}>
+                                        Go</button></div>
+                                )}
+                            </div> 
+                        )}
 
                             {result?.attempt>=quiz.number_attempts && (
                                 <div className="row-auto d-flex justify-content-center">
@@ -157,10 +180,11 @@ export default function QuizDetails() {
                         <hr />
 
                         {quizzes
-                            .filter((quiz: any) => quiz.course == cid)
-                            .filter((quiz: any) => quiz._id == qid)
+                            .filter((q: any) => q.course === cid)
+                            .filter((q: any) => q._id === qid)
                             .map((quiz: any) => (
                                 <>
+                                
                                     <div className="row">
                                         <h4 style={{ fontWeight: "bold" }}> {`${quiz.title}`} </h4>
                                     </div>
@@ -183,7 +207,7 @@ export default function QuizDetails() {
 
 
                                                 <li className="list-group-item border-0 text-nowrap d-flex justify-content-end">
-                                                    <div className="col-auto me-5"><strong>Shuffle Answers</strong></div>
+                                                    <div className="col-auto me-5"><strong>Weight</strong></div>
                                                 </li>
 
                                                 <li className="list-group-item border-0 text-nowrap d-flex justify-content-end">
@@ -210,13 +234,6 @@ export default function QuizDetails() {
                                                     <div className="col-auto me-5"><strong>One Question at a Time</strong></div>
                                                 </li>
 
-                                                <li className="list-group-item border-0 text-nowrap d-flex justify-content-end">
-                                                    <div className="col-auto me-5"><strong>Webcam Required</strong></div>
-                                                </li>
-
-                                                <li className="list-group-item border-0 text-nowrap d-flex justify-content-end">
-                                                    <div className="col-auto me-5"><strong>Lock Questions After Answering</strong></div>
-                                                </li>
                                             </ul>
                                         </div>
 
@@ -239,7 +256,7 @@ export default function QuizDetails() {
 
 
                                                 <li className="list-group-item border-0 text-nowrap">
-                                                    <div className="col-auto">{`${quiz.shuffle_answers}`}</div>
+                                                    <div className="col-auto">{quiz.percentage ? quiz.percentage : "--"}%</div>
                                                 </li>
 
                                                 <li className="list-group-item border-0 text-nowrap">
@@ -247,7 +264,7 @@ export default function QuizDetails() {
                                                 </li>
 
                                                 <li className="list-group-item border-0 text-nowrap">
-                                                    <div className="col-auto">{`${quiz.multiple_attempts}`}</div>
+                                                    <div className="col-auto">{quiz.multiple_attempts ? "Yes" : "No"}</div>
                                                 </li>
 
                                                 <li className="list-group-item border-0 text-nowrap">
@@ -255,24 +272,18 @@ export default function QuizDetails() {
                                                 </li>
 
                                                 <li className="list-group-item border-0 text-nowrap">
-                                                    <div className="col-auto">{`${quiz.show_correct_answers}`}</div>
+                                                    <div className="col-auto">{quiz.show_correct_answers ? quiz.show_correct_answers_when : "No"}</div>
                                                 </li>
 
                                                 <li className="list-group-item border-0 text-nowrap">
-                                                    <div className="col-auto">{`${quiz.access_code}`}</div>
+                                                    <div className="col-auto">{quiz.access_code==="" ? (<><br /></>) : quiz.access_code}</div>
                                                 </li>
 
                                                 <li className="list-group-item border-0 text-nowrap">
-                                                    <div className="col-auto">{`${quiz.one_question_at_a_time}`}</div>
+                                                    <div className="col-auto">{quiz.one_question_at_a_time ? "Yes" : "No"}</div>
                                                 </li>
 
-                                                <li className="list-group-item border-0 text-nowrap">
-                                                    <div className="col-auto">{`${quiz.webcam_required}`}</div>
-                                                </li>
-
-                                                <li className="list-group-item border-0 text-nowrap">
-                                                    <div className="col-auto">{`${quiz.lock_questions_after_answering}`}</div>
-                                                </li>
+ 
                                             </ul>
                                         </div>
 

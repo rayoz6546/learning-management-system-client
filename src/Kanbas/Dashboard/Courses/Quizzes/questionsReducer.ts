@@ -15,13 +15,6 @@ const questionsSlice = createSlice({
             state.questions = action.payload;
 
         },
-        // setQuestions: (state, action) => {
-        //     const newQuestions = action.payload;
-        //     const existingQuestions = state.questions.filter(
-        //         (q:any) => !newQuestions.some((newQ:any) => newQ._id === q._id)
-        //     );
-        //     state.questions = [...existingQuestions, ...newQuestions];
-        // },
 
         addQuestion: (state, action) => {
             const newQuestion: any = {

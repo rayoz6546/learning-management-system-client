@@ -41,6 +41,7 @@ const quizzesSlice = createSlice({
                 description: action.payload.description,
                 published: action.payload.published,
                 questions: action.payload.questions,
+                percentage: action.payload.percentage,
             };
             state.quizzes = [...state.quizzes, newQuiz];
 

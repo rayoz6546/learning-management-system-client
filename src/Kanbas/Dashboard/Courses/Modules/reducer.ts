@@ -1,6 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import { modules } from "../../../Database";
-const initialState = {
+
+interface Lesson {
+  _id: string;
+  name: string;
+
+}
+
+interface Module {
+  _id: string;
+  name: string;
+  course: string;
+  lessons: Lesson[];
+  editing?: boolean;
+
+}
+
+interface ModulesState {
+  modules: Module[];
+}
+
+const initialState: ModulesState = {
   modules: [],
 };
 const modulesSlice = createSlice({
@@ -35,8 +54,38 @@ const modulesSlice = createSlice({
         m._id === moduleId ? { ...m, editing: true } : m
     ) as any;
 },
+
+addLessonToModule: (state, { payload: { moduleId, lesson } }) => {
+  state.modules = state.modules.map((module) =>
+    module._id === moduleId
+      ? { ...module, lessons: [...module.lessons, lesson] }
+      : module
+  );
 },
+deleteLessonFromModule: (state, { payload: { moduleId, lessonId } }) => {
+  state.modules = state.modules.map((module) =>
+    module._id === moduleId
+      ? { ...module, lessons: module.lessons.filter((lesson) => lesson._id !== lessonId) }
+      : module
+  );
+},
+
+updateLessonInModule: (state, { payload: { moduleId, lessonId, updatedLesson } }) => {
+  state.modules = state.modules.map((module) =>
+    module._id === moduleId
+      ? {
+          ...module,
+          lessons: module.lessons.map((lesson) =>
+            lesson._id === lessonId ? { ...lesson, ...updatedLesson } : lesson
+          ),
+        }
+      : module
+  );
+},
+},
+
+
 });
-export const { setModules, addModule, deleteModule, updateModule, editModule } =
+export const { setModules, addModule, deleteModule, updateModule, editModule,addLessonToModule,deleteLessonFromModule,updateLessonInModule } =
 modulesSlice.actions;
 export default modulesSlice.reducer;

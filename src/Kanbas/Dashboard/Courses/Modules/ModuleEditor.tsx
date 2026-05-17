@@ -16,7 +16,7 @@ export default function ModuleEditor({ dialogTitle, moduleName, setModuleName, a
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
                   Cancel </button>
-                <button onClick={addModule} type="button" data-bs-dismiss="modal" className="btn btn-danger">
+                <button onClick={addModule} type="button" data-bs-dismiss="modal" className="btn btn-primary">
                   Add Module </button>
               </div>
             </div>
